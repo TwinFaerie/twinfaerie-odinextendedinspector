@@ -1,0 +1,26 @@
+{
+  "name": "com.twinfaerie.odinextendedinspector",
+  "version": "1.0.0",
+  "displayName": "TwinFaerie Odin-Extended-Inspector",
+  "description": "More Attribute for Odin Inspector",
+  "unity": "2020.3",
+  "documentationUrl": "https://github.com/TwinFaerie/twinfaerie-odinextendedinspector/",
+  "changelogUrl": "https://github.com/TwinFaerie/twinfaerie-odinextendedinspector/releases",
+  "licensesUrl": "https://github.com/TwinFaerie/twinfaerie-odinextendedinspector/blob/main/LICENSE",
+  "repository": "https://github.com/TwinFaerie/twinfaerie-odinextendedinspector",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@twinfaerie"
+  },
+  "author": {
+    "name": "Twin Faerie",
+    "email": "support@twinfaerie.my.id",
+    "url": "https://www.twinfaerie.my.id/"
+  },
+  "samples": [
+    {
+      "displayName": "Example Usage",
+      "description": "Adding Example Implementation to the module",
+      "path": "Samples~/TypeReferencesExample"
+    }
+  ]
+}
