@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector.Editor;
 using Sirenix.OdinInspector.Editor.ValueResolvers;
+using Sirenix.Utilities.Editor;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -22,9 +23,19 @@ namespace TF.OdinExtendedInspector.Editor
             if (animatorResolver is null)
             { return null; }
 
-            var animatorController = animatorResolver.GetValue().runtimeAnimatorController as AnimatorController;
-            if (animatorController is null)
+            var runtimeAnimatorController = animatorResolver.GetValue().runtimeAnimatorController;
+            if (runtimeAnimatorController == null)
             { return null; }
+
+            var animatorController = runtimeAnimatorController as AnimatorController;
+            if (animatorController == null)
+            {
+                var animatorOverrideController = runtimeAnimatorController as AnimatorOverrideController;
+                animatorController = animatorOverrideController.runtimeAnimatorController as AnimatorController;
+
+                if (animatorController == null) 
+                { return null; }
+            }
 
             if (Attribute.AnimatorParamType is null)
             {
@@ -38,10 +49,15 @@ namespace TF.OdinExtendedInspector.Editor
             }
         }
 
-        protected override void Initialize()
+        private void Refresh()
         {
             sourceData = GetSourceData();
             UpdateButtonContent();
+        }
+
+        protected override void Initialize()
+        {
+            Refresh();
         }
 
         private void UpdateButtonContent()
@@ -51,6 +67,8 @@ namespace TF.OdinExtendedInspector.Editor
 
         protected override void DrawPropertyLayout(GUIContent label)
         {
+            GUILayout.BeginHorizontal();
+
             var rect = EditorGUILayout.GetControlRect(label != null);
 
             if (label == null)
@@ -62,7 +80,7 @@ namespace TF.OdinExtendedInspector.Editor
                 rect = EditorGUI.PrefixLabel(rect, label);
             }
 
-            if (EditorGUI.DropdownButton(rect, buttonContent, FocusType.Passive))
+            if (EditorGUI.DropdownButton(rect, buttonContent, FocusType.Passive, SirenixGUIStyles.DropDownMiniButton))
             {
                 var selector = new GenericSelector<string>(sourceData);
                 selector.SetSelection(ValueEntry.SmartValue);
@@ -77,6 +95,13 @@ namespace TF.OdinExtendedInspector.Editor
                     });
                 };
             }
+
+            if (SirenixEditorGUI.IconButton(EditorIcons.Refresh, SirenixGUIStyles.MiniButtonRight))
+            {
+                Refresh();
+            }
+
+            GUILayout.EndHorizontal();
         }
     }
 }

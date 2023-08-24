@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector.Editor;
+using Sirenix.Utilities.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,15 @@ namespace TF.OdinExtendedInspector.Editor
 
         protected abstract IEnumerable<string> GetSourceData();
 
-        protected override void Initialize()
+        protected virtual void Refresh()
         {
             sourceData = GetSourceData();
             UpdateButtonContent();
+        }
+
+        protected override void Initialize()
+        {
+            Refresh();
         }
 
         private void UpdateButtonContent()
@@ -28,6 +34,8 @@ namespace TF.OdinExtendedInspector.Editor
 
         protected override void DrawPropertyLayout(GUIContent label)
         {
+            GUILayout.BeginHorizontal();
+
             var rect = EditorGUILayout.GetControlRect(label != null);
 
             if (label == null)
@@ -54,6 +62,13 @@ namespace TF.OdinExtendedInspector.Editor
                     });
                 };
             }
+
+            if (SirenixEditorGUI.IconButton(EditorIcons.Refresh, SirenixGUIStyles.MiniButtonRight))
+            {
+                Refresh();
+            }
+
+            GUILayout.EndHorizontal();
         }
     }
 
@@ -61,13 +76,20 @@ namespace TF.OdinExtendedInspector.Editor
     {
 
         private readonly GUIContent buttonContent = new();
+        private IEnumerable<string> sourceData;
 
         protected abstract IEnumerable<string> GetSourceData();
         protected abstract void UpdateValue(IEnumerable<string> x);
 
+        protected virtual void Refresh()
+        {
+            sourceData = GetSourceData();
+            UpdateButtonContent();
+        }
+
         protected override void Initialize()
         {
-            UpdateButtonContent();
+            Refresh();
         }
 
         private void UpdateButtonContent()
@@ -94,6 +116,8 @@ namespace TF.OdinExtendedInspector.Editor
 
         protected override void DrawPropertyLayout(GUIContent label)
         {
+            GUILayout.BeginHorizontal();
+
             var rect = EditorGUILayout.GetControlRect(label != null);
 
             if (label == null)
@@ -103,7 +127,7 @@ namespace TF.OdinExtendedInspector.Editor
 
             if (EditorGUI.DropdownButton(rect, buttonContent, FocusType.Passive))
             {
-                var selector = new TFTagLayerSelector(GetSourceData());
+                var selector = new TFTagLayerSelector(sourceData);
 
                 rect.y += rect.height;
 
@@ -119,6 +143,13 @@ namespace TF.OdinExtendedInspector.Editor
                     });
                 };
             }
+
+            if (SirenixEditorGUI.IconButton(EditorIcons.Refresh, SirenixGUIStyles.MiniButtonRight))
+            {
+                Refresh();
+            }
+
+            GUILayout.EndHorizontal();
         }
     }
 

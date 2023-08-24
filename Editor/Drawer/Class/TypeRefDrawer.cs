@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector.Editor;
+using Sirenix.Utilities.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace TF.OdinExtendedInspector.Editor
     internal class TypeRefDrawer : OdinValueDrawer<TypeRef>
     {
         private readonly GUIContent buttonContent = new();
+        private IEnumerable<Type> sourceData;
 
         protected IEnumerable<Type> GetSourceData()
         {
@@ -19,9 +21,16 @@ namespace TF.OdinExtendedInspector.Editor
             return data;
         }
 
+        protected virtual void Refresh()
+        {
+            sourceData = GetSourceData();
+            UpdateButtonContent();
+        }
+
+
         protected override void Initialize()
         {
-            UpdateButtonContent();
+            Refresh();
         }
 
         private void UpdateButtonContent()
@@ -31,6 +40,8 @@ namespace TF.OdinExtendedInspector.Editor
 
         protected override void DrawPropertyLayout(GUIContent label)
         {
+            GUILayout.BeginHorizontal();
+
             var rect = EditorGUILayout.GetControlRect(label != null);
 
             if (label == null)
@@ -44,7 +55,7 @@ namespace TF.OdinExtendedInspector.Editor
 
             if (EditorGUI.DropdownButton(rect, buttonContent, FocusType.Passive))
             {
-                var selector = new TFTypeSelector(GetSourceData());
+                var selector = new TFTypeSelector(sourceData);
                 selector.SetSelection(ValueEntry.SmartValue);
                 selector.ShowInPopup(rect.position);
 
@@ -57,6 +68,13 @@ namespace TF.OdinExtendedInspector.Editor
                     });
                 };
             }
+
+            if (SirenixEditorGUI.IconButton(EditorIcons.Refresh, SirenixGUIStyles.MiniButtonRight))
+            {
+                Refresh();
+            }
+
+            GUILayout.EndHorizontal();
         }
     }
 }

@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector.Editor;
+using Sirenix.Utilities.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,10 +40,15 @@ namespace TF.OdinExtendedInspector.Editor
             return data;
         }
 
-        protected override void Initialize()
+        protected virtual void Refresh()
         {
             sourceData = GetSourceData();
             UpdateButtonContent();
+        }
+
+        protected override void Initialize()
+        {
+            Refresh();
         }
 
         private void UpdateButtonContent()
@@ -52,6 +58,8 @@ namespace TF.OdinExtendedInspector.Editor
 
         protected override void DrawPropertyLayout(GUIContent label)
         {
+            GUILayout.BeginHorizontal();
+
             var rect = EditorGUILayout.GetControlRect(label != null);
 
             if (label == null)
@@ -78,6 +86,13 @@ namespace TF.OdinExtendedInspector.Editor
                     });
                 };
             }
+
+            if (SirenixEditorGUI.IconButton(EditorIcons.Refresh, SirenixGUIStyles.MiniButtonRight))
+            {
+                Refresh();
+            }
+
+            GUILayout.EndHorizontal();
         }
 
         private IEnumerable<Type> GetIncludedTypes()
