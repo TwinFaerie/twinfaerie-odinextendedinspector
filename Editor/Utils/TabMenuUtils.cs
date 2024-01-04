@@ -40,7 +40,7 @@ namespace TF.OdinExtendedInspector.Editor
             return false;
         }
         
-        public static bool SelectButtonListWithDelete(ref int index, string[] items, Action onRefresh, Action onDelete)
+        public static bool SelectButtonListItemList(ref int index, string[] items, Action onRefresh, Action onDelete, ref string searchString, Action onSearch)
         {
             var style = new GUIStyle(EditorStyles.miniButtonMid);
             style.stretchHeight = true;
@@ -71,6 +71,28 @@ namespace TF.OdinExtendedInspector.Editor
                     {
                         onDelete?.Invoke();
                         return true;
+                    }
+                }
+                GUILayout.EndHorizontal();
+                
+                GUILayout.BeginHorizontal(new GUIStyle { fixedHeight = 25, stretchHeight = true });
+                {
+                    GUILayout.Space(5);
+                    GUILayout.Label(EditorIcons.MagnifyingGlass.Raw, new GUIStyle { fixedHeight = 15, fixedWidth = 15, contentOffset = new Vector2(2,3)});
+                    GUILayout.Space(5);
+
+                    var newSearchString = GUILayout.TextField(searchString);
+                    if (searchString != newSearchString)
+                    {
+                        searchString = newSearchString;
+                        onSearch?.Invoke();
+                    }
+
+                    GUILayout.Space(5);
+                    if (GUILayout.Button("Clear", new GUIStyle(EditorStyles.miniButtonMid) { fixedWidth = 80, fixedHeight = 18 }))
+                    {
+                        searchString = string.Empty;
+                        onSearch?.Invoke();
                     }
                 }
                 GUILayout.EndHorizontal();
