@@ -168,8 +168,6 @@ namespace TF.OdinExtendedInspector.Editor
                 
                 AssetDatabase.CreateAsset(pathInfoInstance, pathInfoPath + nameof(PathInfo) + ".asset");
                 AssetDatabase.SaveAssets();
-
-                Debug.Log(pathInfoPath + nameof(PathInfo) + ".asset");
                 
                 foundGuidArray = AssetDatabase.FindAssets(filter);
             }
