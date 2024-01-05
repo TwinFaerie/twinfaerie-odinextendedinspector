@@ -16,16 +16,6 @@ namespace TF.OdinExtendedInspector.Editor
             return AppDomain.CurrentDomain.GetAssemblies();
         }
 
-        internal static IEnumerable<Type> GetFilteredTypesFromAssemblies(IEnumerable<Assembly> assemblies, TypeOptionsAttribute filter)
-        {
-            return assemblies.SelectMany(assembly => GetFilteredTypesFromAssembly(assembly, filter));
-        }
-
-        internal static IEnumerable<Type> GetFilteredTypesFromAssemblies(IEnumerable<Assembly> assemblies)
-        {
-            return assemblies.SelectMany(assembly => GetFilteredTypesFromAssembly(assembly));
-        }
-
         internal static bool IsSystemAssembly(Assembly assembly)
         {
             return IsSystemAssembly(assembly.GetName());
@@ -37,15 +27,31 @@ namespace TF.OdinExtendedInspector.Editor
             x == assemblyName.Name ||
             (x.Contains(".?") && HaveSameStringPattern(x.Remove(x.Length - 1), assemblyName.Name)));
         }
+        
+        internal static IEnumerable<Type> GetFilteredTypesFromAssemblies(IEnumerable<Assembly> assemblies, TypeOptionsAttribute filter)
+        {
+            return assemblies.Where(assembly => !IsSystemAssembly(assembly)).SelectMany(GetAllTypesFromAssembly).Where(type => type.IsVisible && FilterConstraintIsSatisfied(filter, type));
+        }
+        
+        internal static IEnumerable<Type> GetFilteredTypesFromAssemblies(IEnumerable<Assembly> assemblies)
+        {
+            return assemblies.Where(assembly => !IsSystemAssembly(assembly)).SelectMany(GetAllTypesFromAssembly).Where(type => type.IsVisible && FilterConstraintIsSatisfied(type));
+        }
 
         internal static IEnumerable<Type> GetFilteredTypesFromAssembly(Assembly assembly, TypeOptionsAttribute filter)
         {
+            if (IsSystemAssembly(assembly))
+            { return null; }
+            
             var assemblyTypes = GetAllTypesFromAssembly(assembly);
             return assemblyTypes.Where(type => (!IsSystemAssembly(assembly) || type.IsVisible) && FilterConstraintIsSatisfied(filter, type));
         }
 
         internal static IEnumerable<Type> GetFilteredTypesFromAssembly(Assembly assembly)
         {
+            if (IsSystemAssembly(assembly))
+            { return null; }
+            
             var assemblyTypes = GetAllTypesFromAssembly(assembly);
             return assemblyTypes.Where(type => (!IsSystemAssembly(assembly) || type.IsVisible) && FilterConstraintIsSatisfied(type));
         }

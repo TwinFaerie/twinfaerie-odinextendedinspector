@@ -30,7 +30,7 @@ namespace TF.OdinExtendedInspector.Editor
             var baseClass = GetType().BaseType;
             var baseClassTypes = baseClass.GetField("types", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(this) as IEnumerable<Type>;
             
-            foreach (Type t in baseClassTypes)
+            foreach (var t in baseClassTypes)
             {
                 var niceName = t.GetNiceName();
                 var typeNamePath = GetCustomTypeNamePath(t, niceName);

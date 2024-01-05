@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
+using Sirenix.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,10 +17,12 @@ namespace TF.OdinExtendedInspector.Editor
         protected int selectedMenuIndex;
         private TObject selectedItem;
 
+        private TCreatable creatableCache;
         private string searchString = string.Empty;
 
         protected override void Initialize()
         {
+            SetupCreatableCache();
             SetupMenuList();
             RefreshData();
         }
@@ -42,6 +46,16 @@ namespace TF.OdinExtendedInspector.Editor
             }
             
             base.OnImGUI();
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            if (creatableCache is not null)
+            {
+                creatableCache.Destroy();
+            }
         }
 
         protected override OdinMenuTree BuildMenuTree()
@@ -91,7 +105,7 @@ namespace TF.OdinExtendedInspector.Editor
 
         protected void GenerateCreateNewDataMenu(OdinMenuTree menuTree)
         {
-            menuTree.Add("Create New", new TCreatable());
+            menuTree.Add("Create New", creatableCache);
         }
 
         private void RefreshData()
@@ -124,6 +138,11 @@ namespace TF.OdinExtendedInspector.Editor
         private void SetupMenuList()
         {
             menuList = GetMenuNameList();
+        }
+
+        private void SetupCreatableCache()
+        {
+            creatableCache = new TCreatable();
         }
 
         protected virtual List<(bool isItemList, string name)> GetMenuNameList()

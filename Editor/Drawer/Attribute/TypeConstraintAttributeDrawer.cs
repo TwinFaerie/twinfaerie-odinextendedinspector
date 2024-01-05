@@ -30,11 +30,7 @@ namespace TF.OdinExtendedInspector.Editor
 
             var data = new List<Type>();
 
-            foreach (var item in assemblies)
-            {
-                data.AddRange(TypeCollector.GetFilteredTypesFromAssembly(item, Attribute));
-            }
-
+            data.AddRange(TypeCollector.GetFilteredTypesFromAssemblies(assemblies, Attribute));
             data.AddRange(GetIncludedTypes());
 
             return data;
