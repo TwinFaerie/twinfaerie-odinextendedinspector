@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TF.OdinExtendedInspector.Editor
 {
-    public abstract class AssetSelectorMenu<TObject, TCreatable> : AssetViewerMenu<TObject, TCreatable> where TObject : ScriptableObject where TCreatable : ICreatableSO, new()
+    public abstract class AssetSelectorMenu<TObject, TCreatable> : AssetViewerMenu<TObject, TCreatable> where TObject : ScriptableObject where TCreatable : BaseCreatableSO<TObject>, new()
     {
         protected abstract ScriptableObject ActiveMenuSetting { get; }
 
