@@ -53,11 +53,7 @@ namespace TF.OdinExtendedInspector.Editor
         protected override void OnDestroy()
         {
             base.OnDestroy();
-
-            if (creatableCache is not null)
-            {
-                creatableCache.Destroy();
-            }
+            creatableCache?.Destroy();
         }
 
         protected override OdinMenuTree BuildMenuTree()

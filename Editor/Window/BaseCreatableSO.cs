@@ -16,6 +16,8 @@ namespace TF.OdinExtendedInspector.Editor
         [BoxGroup("Content")] [InlineEditor(ObjectFieldMode = InlineEditorObjectFieldModes.Hidden)]
         public T content;
 
+        private string defaultName;
+
         public BaseCreatableSO()
         {
             content = ScriptableObject.CreateInstance<T>();
@@ -23,6 +25,7 @@ namespace TF.OdinExtendedInspector.Editor
 
         public void Setup(PathInfo pathInfo)
         {
+            defaultName = name;
             path = pathInfo.pathName;
             AssetUtils.AutoCorrectPath(ref path);
         }
@@ -41,6 +44,14 @@ namespace TF.OdinExtendedInspector.Editor
             
             AssetDatabase.CreateAsset(content, path + name + ".asset");
             AssetDatabase.SaveAssets();
+            
+            ResetData();
+        }
+
+        private void ResetData()
+        {
+            name = defaultName;
+            content = ScriptableObject.CreateInstance<T>();
         }
         
         public virtual void Destroy()
