@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Sirenix.OdinInspector.Editor;
-using Sirenix.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -34,7 +32,7 @@ namespace TF.OdinExtendedInspector.Editor
             selectedItem = MenuTree?.Selection?.SelectedValue as TObject;
 
             var buttonResult = menuList[selectedMenuIndex].isItemList ? 
-                TabMenuUtils.SelectButtonListItemList(ref selectedMenuIndex, menuList.Select(x => x.name).ToArray(), RefreshData, DeleteData, ref searchString, ForceMenuTreeRebuild) : 
+                TabMenuUtils.SelectButtonListItemList(ref selectedMenuIndex, menuList.Select(x => x.name).ToArray(), SelectData, RefreshData, DeleteData, ref searchString, ForceMenuTreeRebuild) : 
                 TabMenuUtils.SelectButtonList(ref selectedMenuIndex, menuList.Select(x => x.name).ToArray(), RefreshData);
             
             if (buttonResult)
@@ -97,7 +95,7 @@ namespace TF.OdinExtendedInspector.Editor
                     }
                 }
                 
-                menuTree.Add(item.name, item);
+                menuTree.Add(item.name.Replace('_', '/'), item);
             }
         }
 
@@ -121,6 +119,14 @@ namespace TF.OdinExtendedInspector.Editor
                     menuItemList.Add(item);
                 }
             }
+        }
+
+        private void SelectData()
+        {
+            if (selectedItem is null)
+            { return; }
+            
+            Selection.activeObject = selectedItem;
         }
 
         private void DeleteData()

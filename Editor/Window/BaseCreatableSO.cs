@@ -1,11 +1,11 @@
-using System.IO;
-using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 
 namespace TF.OdinExtendedInspector.Editor
 {
+    using Object = UnityEngine.Object;
+    
     public abstract class BaseCreatableSO<T> where T : ScriptableObject
     {
         [BoxGroup("Info")]
