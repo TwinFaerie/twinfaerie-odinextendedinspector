@@ -153,11 +153,9 @@ namespace TF.OdinExtendedInspector.Editor
             creatableCache = new TCreatable();
             
             var filter = "t:" + nameof(PathInfo);
-            var foundGuidArray = AssetDatabase.FindAssets(filter);
-            
-            foundGuidArray = foundGuidArray.Where(guid => AssetDatabase.LoadAssetAtPath<PathInfo>(AssetDatabase.GUIDToAssetPath(guid)).type == GetType()).ToArray();
+            var foundGuidList = AssetDatabase.FindAssets(filter).Where(guid => AssetDatabase.LoadAssetAtPath<PathInfo>(AssetDatabase.GUIDToAssetPath(guid)).type == GetType()).ToList();
 
-            while (foundGuidArray == null || foundGuidArray.Length <= 0)
+            while (!foundGuidList.Any())
             {
                 AssetUtils.AutoCorrectPath(ref creatableCache.path);
                 var pathInfoPath = creatableCache.path + "_Info/";
@@ -167,14 +165,16 @@ namespace TF.OdinExtendedInspector.Editor
                 pathInfoInstance.pathName = creatableCache.path;
                 pathInfoInstance.type = GetType();
                 pathInfoInstance.onSetPath = ChangePath;
+
+                var assetPath = pathInfoPath + nameof(PathInfo) + ".asset";
                 
-                AssetDatabase.CreateAsset(pathInfoInstance, pathInfoPath + nameof(PathInfo) + ".asset");
+                AssetDatabase.CreateAsset(pathInfoInstance, assetPath);
                 AssetDatabase.SaveAssets();
                 
-                foundGuidArray = AssetDatabase.FindAssets(filter);
+                foundGuidList.Add(AssetDatabase.AssetPathToGUID(assetPath));
             }
             
-            var selectedObject = AssetDatabase.LoadAssetAtPath<PathInfo>(AssetDatabase.GUIDToAssetPath(foundGuidArray[0]));
+            var selectedObject = AssetDatabase.LoadAssetAtPath<PathInfo>(AssetDatabase.GUIDToAssetPath(foundGuidList.FirstOrDefault()));
             
             AssetUtils.AutoCorrectPath(ref selectedObject.pathName);
 
@@ -191,12 +191,10 @@ namespace TF.OdinExtendedInspector.Editor
                 ChangePath(oldPath, newPath, selectedObject.pathName);
             }
 
-            if (foundGuidArray.Length > 1)
+            if (foundGuidList.Count > 1)
             {
-                for (int i = 1; i < foundGuidArray.Length; i++)
-                {
-                    AssetDatabase.DeleteAsset(AssetDatabase.GUIDToAssetPath(foundGuidArray[i]));
-                }
+                foundGuidList.RemoveAt(0);
+                foundGuidList.ForEach(guid => AssetDatabase.DeleteAsset(AssetDatabase.GUIDToAssetPath(guid)));
             }
             
             AssetDatabase.SaveAssets();
