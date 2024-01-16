@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TF.OdinExtendedInspector.Editor
 {
-    internal abstract class StringSelectorDrawer<A> : OdinAttributeDrawer<A, string> where A : Attribute
+    public abstract class StringSelectorDrawer<A> : OdinAttributeDrawer<A, string> where A : Attribute
     {
         private readonly GUIContent buttonContent = new();
         private IEnumerable<string> sourceData;
@@ -72,7 +72,7 @@ namespace TF.OdinExtendedInspector.Editor
         }
     }
 
-    internal abstract class MultipleStringSelectorDrawer<A, T> : OdinAttributeDrawer<A, T> where A : Attribute where T : IEnumerable<string>
+    public abstract class MultipleStringSelectorDrawer<A, T> : OdinAttributeDrawer<A, T> where A : Attribute where T : IEnumerable<string>
     {
 
         private readonly GUIContent buttonContent = new();
@@ -153,7 +153,7 @@ namespace TF.OdinExtendedInspector.Editor
         }
     }
 
-    internal class MultipleStringSelector : GenericSelector<string>
+    public class MultipleStringSelector : GenericSelector<string>
     {
         private readonly FieldInfo tfRequestCheckboxUpdate;
         private readonly IEnumerable<string> tfSource;
