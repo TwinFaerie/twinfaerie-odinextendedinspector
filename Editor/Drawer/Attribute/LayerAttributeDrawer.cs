@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace TF.OdinExtendedInspector.Editor
 {
-    internal class LayerAttributeDrawer : StringSelectorDrawer<LayerAttribute>
+    internal class LayerAttributeDrawer : ItemSelectorAttributeDrawer<LayerAttribute, string>
     {
         protected override IEnumerable<string> GetSourceData()
         {
@@ -11,7 +11,7 @@ namespace TF.OdinExtendedInspector.Editor
         }
     }
 
-    internal class LayerAttributeListDrawer : MultipleStringSelectorDrawer<LayerAttribute, List<string>>
+    internal class LayerAttributeListDrawer : MultipleItemSelectorAttributeDrawer<LayerAttribute, IEnumerable<string>, string>
     {
         protected override IEnumerable<string> GetSourceData()
         {
@@ -24,7 +24,7 @@ namespace TF.OdinExtendedInspector.Editor
         }
     }
 
-    internal class LayerAttributeArrayDrawer : MultipleStringSelectorDrawer<LayerAttribute, string[]>
+    internal class LayerAttributeArrayDrawer : MultipleItemSelectorAttributeDrawer<LayerAttribute, IEnumerable<string>, string>
     {
         protected override IEnumerable<string> GetSourceData()
         {

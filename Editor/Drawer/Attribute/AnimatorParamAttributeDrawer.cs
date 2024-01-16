@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TF.OdinExtendedInspector.Editor
 {
-    internal class AnimatorParamAttributeDrawer : StringSelectorDrawer<AnimatorParamAttribute>
+    internal class AnimatorParamAttributeDrawer : ItemSelectorAttributeDrawer<AnimatorParamAttribute, string>
     {
         private IEnumerable<string> sourceData;
 
