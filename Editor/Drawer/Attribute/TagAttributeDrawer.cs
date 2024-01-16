@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace TF.OdinExtendedInspector.Editor
 {
-    internal class TagAttributeDrawer : TFTagLayerSingleDrawer<TagAttribute>
+    internal class TagAttributeDrawer : StringSelectorDrawer<TagAttribute>
     {
         protected override IEnumerable<string> GetSourceData()
         {
@@ -11,7 +11,7 @@ namespace TF.OdinExtendedInspector.Editor
         }
     }
 
-    internal class TagAttributeListDrawer : TFTagLayerMultipleDrawer<TagAttribute, List<string>>
+    internal class TagAttributeListDrawer : MultipleStringSelectorDrawer<TagAttribute, List<string>>
     {
         protected override IEnumerable<string> GetSourceData()
         {
@@ -24,7 +24,7 @@ namespace TF.OdinExtendedInspector.Editor
         }
     }
 
-    internal class TagAttributeArrayDrawer : TFTagLayerMultipleDrawer<TagAttribute, string[]>
+    internal class TagAttributeArrayDrawer : MultipleStringSelectorDrawer<TagAttribute, string[]>
     {
         protected override IEnumerable<string> GetSourceData()
         {

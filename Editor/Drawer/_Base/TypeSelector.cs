@@ -5,18 +5,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnityEditor;
 using UnityEngine;
 
 namespace TF.OdinExtendedInspector.Editor
 {
-    public class TFTypeSelector : TypeSelector
+    public class TypeSelector : Sirenix.OdinInspector.Editor.TypeSelector
     {
         private readonly TypeConstraintGrouping grouping;
         private bool isFlatten => grouping == TypeConstraintGrouping.None || FlattenTree;
         
-        public TFTypeSelector(IEnumerable<Type> types) : this(types, TypeConstraintGrouping.ByNamespace) { }
-        public TFTypeSelector(IEnumerable<Type> types, TypeConstraintGrouping grouping) : base(types, false)
+        public TypeSelector(IEnumerable<Type> types) : this(types, TypeConstraintGrouping.ByNamespace) { }
+        public TypeSelector(IEnumerable<Type> types, TypeConstraintGrouping grouping) : base(types, false)
         {
             this.grouping = grouping;
         }

@@ -69,7 +69,7 @@ namespace TF.OdinExtendedInspector.Editor
 
             if (EditorGUI.DropdownButton(rect, buttonContent, FocusType.Passive))
             {
-                var selector = new TFTypeSelector(sourceData, Attribute.Grouping);
+                var selector = new TypeSelector(sourceData, Attribute.Grouping);
                 selector.SetSelection(ValueEntry.SmartValue);
                 selector.ShowInPopup(rect.position);
 

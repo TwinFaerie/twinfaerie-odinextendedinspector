@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace TF.OdinExtendedInspector.Editor
 {
-    internal class SortingLayerAttributeDrawer : TFTagLayerSingleDrawer<SortingLayerAttribute>
+    internal class SortingLayerAttributeDrawer : StringSelectorDrawer<SortingLayerAttribute>
     {
         protected override IEnumerable<string> GetSourceData()
         {
@@ -15,7 +15,7 @@ namespace TF.OdinExtendedInspector.Editor
         }
     }
 
-    internal class SortingLayerAttributeListDrawer : TFTagLayerMultipleDrawer<SortingLayerAttribute, List<string>>
+    internal class SortingLayerAttributeListDrawer : MultipleStringSelectorDrawer<SortingLayerAttribute, List<string>>
     {
         protected override IEnumerable<string> GetSourceData()
         {
@@ -30,7 +30,7 @@ namespace TF.OdinExtendedInspector.Editor
         }
     }
 
-    internal class SortingLayerAttributeArrayDrawer : TFTagLayerMultipleDrawer<SortingLayerAttribute, string[]>
+    internal class SortingLayerAttributeArrayDrawer : MultipleStringSelectorDrawer<SortingLayerAttribute, string[]>
     {
         protected override IEnumerable<string> GetSourceData()
         {

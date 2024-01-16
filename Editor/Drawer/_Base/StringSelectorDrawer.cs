@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TF.OdinExtendedInspector.Editor
 {
-    internal abstract class TFTagLayerSingleDrawer<A> : OdinAttributeDrawer<A, string> where A : Attribute
+    internal abstract class StringSelectorDrawer<A> : OdinAttributeDrawer<A, string> where A : Attribute
     {
         private readonly GUIContent buttonContent = new();
         private IEnumerable<string> sourceData;
@@ -72,7 +72,7 @@ namespace TF.OdinExtendedInspector.Editor
         }
     }
 
-    internal abstract class TFTagLayerMultipleDrawer<A, T> : OdinAttributeDrawer<A, T> where A : Attribute where T : IEnumerable<string>
+    internal abstract class MultipleStringSelectorDrawer<A, T> : OdinAttributeDrawer<A, T> where A : Attribute where T : IEnumerable<string>
     {
 
         private readonly GUIContent buttonContent = new();
@@ -127,7 +127,7 @@ namespace TF.OdinExtendedInspector.Editor
 
             if (EditorGUI.DropdownButton(rect, buttonContent, FocusType.Passive))
             {
-                var selector = new TFTagLayerSelector(sourceData);
+                var selector = new MultipleStringSelector(sourceData);
 
                 rect.y += rect.height;
 
@@ -153,12 +153,12 @@ namespace TF.OdinExtendedInspector.Editor
         }
     }
 
-    internal class TFTagLayerSelector : GenericSelector<string>
+    internal class MultipleStringSelector : GenericSelector<string>
     {
         private readonly FieldInfo tfRequestCheckboxUpdate;
         private readonly IEnumerable<string> tfSource;
 
-        internal TFTagLayerSelector(IEnumerable<string> source) : base(source)
+        internal MultipleStringSelector(IEnumerable<string> source) : base(source)
         {
             CheckboxToggle = true;
             tfSource = source;

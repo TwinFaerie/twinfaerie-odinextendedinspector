@@ -13,7 +13,7 @@ namespace TF.OdinExtendedInspector.Editor
         private readonly GUIContent buttonContent = new();
         private IEnumerable<Type> sourceData;
 
-        protected IEnumerable<Type> GetSourceData()
+        private IEnumerable<Type> GetSourceData()
         {
             var assemblies = TypeCollector.GetAllAssemblies();
             var data = TypeCollector.GetFilteredTypesFromAssemblies(assemblies);
@@ -55,7 +55,7 @@ namespace TF.OdinExtendedInspector.Editor
 
             if (EditorGUI.DropdownButton(rect, buttonContent, FocusType.Passive))
             {
-                var selector = new TFTypeSelector(sourceData);
+                var selector = new TypeSelector(sourceData);
                 selector.SetSelection(ValueEntry.SmartValue);
                 selector.ShowInPopup(rect.position);
 
