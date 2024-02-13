@@ -9,6 +9,14 @@ This module created to extend use of Odin Inspector. Currently this will add:
   - TypeOptions Attribute
   - TypeConstraint Attribute
 
+# Installation
+Requirement
+- Odin Inspector: https://assetstore.unity.com/packages/tools/utilities/odin-inspector-and-serializer-89041
+
+You can just use Unity Package Manager and use either Git URL or OpenUPM URL down below.  
+- Github: TODO
+- OpenUPM: TODO
+
 # How To Use
 TODO
 
