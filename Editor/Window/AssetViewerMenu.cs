@@ -80,7 +80,7 @@ namespace TF.OdinExtendedInspector.Editor
             return menuTree;
         }
 
-        protected void GenerateAvailableSettingList(OdinMenuTree menuTree)
+        protected virtual void GenerateAvailableSettingList(OdinMenuTree menuTree)
         {
             foreach (var item in menuItemList)
             {
@@ -99,7 +99,7 @@ namespace TF.OdinExtendedInspector.Editor
             }
         }
 
-        protected void GenerateCreateNewDataMenu(OdinMenuTree menuTree)
+        protected virtual void GenerateCreateNewDataMenu(OdinMenuTree menuTree)
         {
             menuTree.Add("Create New", creatableCache);
             menuTree.Add("Change Path", pathInfo);
