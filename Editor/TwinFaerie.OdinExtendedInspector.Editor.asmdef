@@ -2,7 +2,9 @@
     "name": "TwinFaerie.OdinExtendedInspector.Editor",
     "rootNamespace": "",
     "references": [
-        "TwinFaerie.OdinExtendedInspector"
+        "TwinFaerie.OdinExtendedInspector",
+        "Unity.Timeline",
+        "TwinFaerie.Timeline"
     ],
     "includePlatforms": [
         "Editor"
@@ -13,6 +15,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.timeline",
+            "expression": "1.0.0",
+            "define": "UNITY_TIMELINE"
+        }
+    ],
     "noEngineReferences": false
 }

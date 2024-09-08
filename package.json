@@ -1,6 +1,6 @@
 {
   "name": "com.twinfaerie.odinextendedinspector",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "displayName": "TwinFaerie Odin-Extended-Inspector",
   "description": "More Attribute for Odin Inspector",
   "unity": "2020.3",
@@ -15,12 +15,5 @@
     "name": "Twin Faerie",
     "email": "support@twinfaerie.my.id",
     "url": "https://www.twinfaerie.my.id/"
-  },
-  "samples": [
-    {
-      "displayName": "Example Usage",
-      "description": "Adding Example Implementation to the module",
-      "path": "Samples~/TypeReferencesExample"
-    }
-  ]
+  }
 }

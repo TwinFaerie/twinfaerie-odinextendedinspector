@@ -29,7 +29,7 @@ namespace TF.OdinExtendedInspector.Editor
 
         private void UpdateButtonContent()
         {
-            buttonContent.text = ValueEntry.SmartValue.ToString();
+            buttonContent.text = ValueEntry.SmartValue == null ? "-" : ValueEntry.SmartValue.ToString();
         }
 
         protected override void DrawPropertyLayout(GUIContent label)
