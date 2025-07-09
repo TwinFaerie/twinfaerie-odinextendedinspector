@@ -9,7 +9,7 @@ namespace TF.OdinExtendedInspector
     /// Overlay for the <see cref="Dictionary{TKey, TValue}"/> to allow serialization of the key/value pairs.
     /// </summary>
     [Serializable]
-    public sealed class SerializedDictionary<TK, TV> : IDictionary<TK, TV>, ISerializationCallbackReceiver
+    public class SerializedDictionary<TK, TV> : IDictionary<TK, TV>, ISerializationCallbackReceiver
     {
         [Serializable]
         private struct KeyValuePair
@@ -82,7 +82,7 @@ namespace TF.OdinExtendedInspector
             }
         }
 
-        public void Add(TK key, TV value)
+        public virtual void Add(TK key, TV value)
         {
             pairs.Add(new KeyValuePair(key, value));
             dictionary.Add(key, value);
@@ -94,7 +94,7 @@ namespace TF.OdinExtendedInspector
             return dictionary.ContainsKey(key);
         }
 
-        public bool Remove(TK key)
+        public virtual bool Remove(TK key)
         {
             if (dictionary.Remove(key))
             {
@@ -115,7 +115,7 @@ namespace TF.OdinExtendedInspector
             return dictionary.TryGetValue(key, out value);
         }
 
-        public void Clear()
+        public virtual void Clear()
         {
             pairs.Clear();
             dictionary.Clear();
