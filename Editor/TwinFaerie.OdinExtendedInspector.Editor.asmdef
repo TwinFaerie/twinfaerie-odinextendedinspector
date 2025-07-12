@@ -20,6 +20,11 @@
             "name": "com.unity.timeline",
             "expression": "1.0.0",
             "define": "UNITY_TIMELINE"
+        },
+        {
+            "name": "com.twinfaerie.timeline",
+            "expression": "1.0.0",
+            "define": "TF_TIMELINE"
         }
     ],
     "noEngineReferences": false

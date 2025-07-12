@@ -1,4 +1,4 @@
-#if UNITY_TIMELINE
+#if UNITY_TIMELINE && TF_TIMELINE
 using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector.Editor.ValueResolvers;
