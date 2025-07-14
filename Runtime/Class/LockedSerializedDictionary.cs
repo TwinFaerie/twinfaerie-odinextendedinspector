@@ -14,6 +14,7 @@ namespace TF.OdinExtendedInspector
             #if UNITY_EDITOR
             return base.Remove(key);
             #endif
+            return false;
         }
 
         public override void Clear()
