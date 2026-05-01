@@ -1,6 +1,6 @@
 namespace TF.OdinExtendedInspector
 {
-    public class LockedSerializedDictionary<TK, TV> : SerializedDictionary<TK, TV>
+    public class LockedSerializedRefDictionary<TK, TV> : SerializedRefDictionary<TK, TV>
     {
         public override void Add(TK key, TV value)
         {
