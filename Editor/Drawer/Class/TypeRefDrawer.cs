@@ -73,6 +73,8 @@ namespace TF.OdinExtendedInspector.Editor
             {
                 Refresh();
             }
+            
+            UpdateButtonContent();
 
             GUILayout.EndHorizontal();
         }

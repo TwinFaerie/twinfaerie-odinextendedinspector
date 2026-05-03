@@ -48,7 +48,6 @@ namespace TF.OdinExtendedInspector
         [SerializeField, HideInInspector]
         private bool error;
 
-
         private void UpdateIndexes(int removedIndex)
         {
             for (var i = removedIndex; i < pairs.Count; i++)
