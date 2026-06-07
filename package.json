@@ -1,6 +1,6 @@
 {
   "name": "com.twinfaerie.odinextendedinspector",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "displayName": "TwinFaerie Odin-Extended-Inspector",
   "description": "More Attribute for Odin Inspector",
   "unity": "2020.3",
@@ -12,8 +12,8 @@
     "registry": "https://npm.pkg.github.com/@twinfaerie"
   },
   "author": {
-    "name": "Twin Faerie",
-    "email": "support@twinfaerie.my.id",
-    "url": "https://www.twinfaerie.my.id/"
+    "name": "TwinFaerie",
+    "url": "https://www.twinfaerie.my.id/",
+    "email": "support@twinfaerie.my.id"
   }
 }
