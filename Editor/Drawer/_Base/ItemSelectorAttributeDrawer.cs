@@ -15,6 +15,7 @@ namespace TF.OdinExtendedInspector.Editor
         private IEnumerable<T> sourceData;
 
         protected abstract IEnumerable<T> GetSourceData();
+        protected virtual string GetMenuItemName(T item) => item.ToString();
 
         protected virtual void Refresh()
         {
@@ -37,19 +38,12 @@ namespace TF.OdinExtendedInspector.Editor
             GUILayout.BeginHorizontal();
 
             var rect = EditorGUILayout.GetControlRect(label != null);
-
-            if (label == null)
-            {
-                rect = EditorGUI.IndentedRect(rect);
-            }
-            else
-            {
-                rect = EditorGUI.PrefixLabel(rect, label);
-            }
+            rect = label == null ? EditorGUI.IndentedRect(rect) : EditorGUI.PrefixLabel(rect, label);
 
             if (EditorGUI.DropdownButton(rect, buttonContent, FocusType.Passive))
             {
-                var selector = new GenericSelector<T>(sourceData);
+                var selector = new GenericSelector<T>(string.Empty, false, GetMenuItemName, sourceData);
+                selector.SelectionTree.Config.UseCachedExpandedStates = false;
                 selector.SetSelection(ValueEntry.SmartValue);
                 selector.ShowInPopup(rect.position);
 
@@ -72,15 +66,14 @@ namespace TF.OdinExtendedInspector.Editor
         }
     }
 
-    public abstract class MultipleItemSelectorAttributeDrawer<A, TD, T> : OdinAttributeDrawer<A, TD>
-        where A : Attribute where TD : IEnumerable<T>
+    public abstract class MultipleItemSelectorAttributeDrawer<A, TD, T> : OdinAttributeDrawer<A, TD> where A : Attribute where TD : IEnumerable<T>
     {
-
         private readonly GUIContent buttonContent = new();
         private IEnumerable<T> sourceData;
 
         protected abstract IEnumerable<T> GetSourceData();
         protected abstract void UpdateValue(IEnumerable<T> x);
+        protected virtual string GetMenuItemName(T item) => item.ToString();
 
         protected virtual void Refresh()
         {
@@ -114,6 +107,40 @@ namespace TF.OdinExtendedInspector.Editor
 
             buttonContent.tooltip = buttonContent.text;
         }
+        
+        protected override void DrawPropertyLayout(GUIContent label)
+        {
+            GUILayout.BeginHorizontal();
+
+            var rect = EditorGUILayout.GetControlRect(label != null);
+            rect = label == null ? EditorGUI.IndentedRect(rect) : EditorGUI.PrefixLabel(rect, label);
+
+            if (EditorGUI.DropdownButton(rect, buttonContent, FocusType.Passive))
+            {
+                rect.y += rect.height;
+                
+                var selector = new MultipleItemSelector<T>(sourceData, GetMenuItemName);
+                selector.SelectionTree.Config.UseCachedExpandedStates = false;
+                selector.SetSelection(ValueEntry.SmartValue);
+                selector.ShowInPopup(rect.position);
+
+                selector.SelectionChanged += x =>
+                {
+                    ValueEntry.Property.Tree.DelayAction(() =>
+                    {
+                        UpdateValue(x);
+                        UpdateButtonContent();
+                    });
+                };
+            }
+
+            if (SirenixEditorGUI.IconButton(EditorIcons.Refresh, SirenixGUIStyles.MiniButtonRight))
+            {
+                Refresh();
+            }
+
+            GUILayout.EndHorizontal();
+        }
     }
 
     public abstract class ItemSelectorDrawer<T> : OdinValueDrawer<T>
@@ -122,6 +149,7 @@ namespace TF.OdinExtendedInspector.Editor
         private IEnumerable<T> sourceData;
 
         protected abstract IEnumerable<T> GetSourceData();
+        protected virtual string GetMenuItemName(T item) => item.ToString();
 
         protected virtual void Refresh()
         {
@@ -144,19 +172,12 @@ namespace TF.OdinExtendedInspector.Editor
             GUILayout.BeginHorizontal();
 
             var rect = EditorGUILayout.GetControlRect(label != null);
-
-            if (label == null)
-            {
-                rect = EditorGUI.IndentedRect(rect);
-            }
-            else
-            {
-                rect = EditorGUI.PrefixLabel(rect, label);
-            }
+            rect = label == null ? EditorGUI.IndentedRect(rect) : EditorGUI.PrefixLabel(rect, label);
 
             if (EditorGUI.DropdownButton(rect, buttonContent, FocusType.Passive))
             {
-                var selector = new GenericSelector<T>(sourceData);
+                var selector = new GenericSelector<T>(string.Empty, false, GetMenuItemName, sourceData);
+                selector.SelectionTree.Config.UseCachedExpandedStates = false;
                 selector.SetSelection(ValueEntry.SmartValue);
                 selector.ShowInPopup(rect.position);
 
@@ -181,12 +202,12 @@ namespace TF.OdinExtendedInspector.Editor
 
     public abstract class MultipleItemSelectorDrawer<TD, T> : OdinValueDrawer<TD> where TD : IEnumerable<T>
     {
-
         private readonly GUIContent buttonContent = new();
         private IEnumerable<T> sourceData;
 
         protected abstract IEnumerable<T> GetSourceData();
         protected abstract void UpdateValue(IEnumerable<T> x);
+        protected virtual string GetMenuItemName(T item) => item.ToString();
 
         protected virtual void Refresh()
         {
@@ -226,18 +247,14 @@ namespace TF.OdinExtendedInspector.Editor
             GUILayout.BeginHorizontal();
 
             var rect = EditorGUILayout.GetControlRect(label != null);
-
-            if (label == null)
-                rect = EditorGUI.IndentedRect(rect);
-            else
-                rect = EditorGUI.PrefixLabel(rect, label);
+            rect = label == null ? EditorGUI.IndentedRect(rect) : EditorGUI.PrefixLabel(rect, label);
 
             if (EditorGUI.DropdownButton(rect, buttonContent, FocusType.Passive))
             {
-                var selector = new MultipleItemSelector<T>(sourceData);
-
                 rect.y += rect.height;
-
+                
+                var selector = new MultipleItemSelector<T>(sourceData, GetMenuItemName);
+                selector.SelectionTree.Config.UseCachedExpandedStates = false;
                 selector.SetSelection(ValueEntry.SmartValue);
                 selector.ShowInPopup(rect.position);
 
@@ -265,7 +282,8 @@ namespace TF.OdinExtendedInspector.Editor
         private readonly FieldInfo tfRequestCheckboxUpdate;
         private readonly IEnumerable<T> tfSource;
 
-        internal MultipleItemSelector(IEnumerable<T> source) : base(source)
+        internal MultipleItemSelector(IEnumerable<T> source, Func<T, string> getMenuItemName = null) 
+            : base(string.Empty, true, getMenuItemName ?? (item => item.ToString()), source)
         {
             CheckboxToggle = true;
             tfSource = source;
