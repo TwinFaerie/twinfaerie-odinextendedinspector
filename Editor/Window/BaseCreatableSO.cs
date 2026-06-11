@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using UnityEditor;
@@ -64,7 +65,7 @@ namespace TF.OdinExtendedInspector.Editor
         private void ResetData()
         {
             name = defaultName;
-            content = ScriptableObject.CreateInstance<T>();
+            content = ScriptableObject.CreateInstance(typeDict.First().Value) as T;
         }
         
         public virtual void Destroy()
