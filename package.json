@@ -1,6 +1,6 @@
 {
   "name": "com.twinfaerie.odinextendedinspector",
-  "version": "1.0.25",
+  "version": "1.0.26",
   "displayName": "TwinFaerie Odin-Extended-Inspector",
   "description": "More Attribute for Odin Inspector",
   "unity": "2020.3",
@@ -8,9 +8,6 @@
   "changelogUrl": "https://github.com/TwinFaerie/twinfaerie-odinextendedinspector/releases",
   "licensesUrl": "https://github.com/TwinFaerie/twinfaerie-odinextendedinspector/blob/main/LICENSE",
   "repository": "https://github.com/TwinFaerie/twinfaerie-odinextendedinspector",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/@twinfaerie"
-  },
   "author": {
     "name": "TwinFaerie",
     "url": "https://www.twinfaerie.com/",

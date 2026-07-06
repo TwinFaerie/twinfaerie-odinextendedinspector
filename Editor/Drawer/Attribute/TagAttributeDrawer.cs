@@ -11,7 +11,7 @@ namespace TF.OdinExtendedInspector.Editor
         }
     }
 
-    internal class TagAttributeListDrawer : MultipleItemSelectorAttributeDrawer<TagAttribute, IEnumerable<string>, string>
+    internal class TagAttributeListDrawer : MultipleItemSelectorAttributeDrawer<TagAttribute, List<string>, string>
     {
         protected override IEnumerable<string> GetSourceData()
         {
@@ -24,7 +24,7 @@ namespace TF.OdinExtendedInspector.Editor
         }
     }
 
-    internal class TagAttributeArrayDrawer : MultipleItemSelectorAttributeDrawer<TagAttribute, IEnumerable<string>, string>
+    internal class TagAttributeArrayDrawer : MultipleItemSelectorAttributeDrawer<TagAttribute, string[], string>
     {
         protected override IEnumerable<string> GetSourceData()
         {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector.Editor;
+using Sirenix.Utilities;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace TF.OdinExtendedInspector.Editor
     {
         private List<(bool isItemList, string name)> menuList;
         
-        private readonly List<TObject> menuItemList = new();
+        private readonly List<TObject> itemList = new();
         protected int selectedMenuIndex;
         private TObject selectedItem;
 
@@ -20,8 +21,15 @@ namespace TF.OdinExtendedInspector.Editor
         
         private string searchString = string.Empty;
 
+        protected virtual bool InitialForceFolded => false;
+        protected virtual bool LeftDropdownIcon => false;
+        protected virtual float InitialMenuWidth => 0f;
+        protected virtual char Separator => '_';
+
         protected override void Initialize()
         {
+            if (InitialMenuWidth > 0f) MenuWidth = InitialMenuWidth;
+            
             SetupCreateObject();
             SetupMenuList();
             RefreshData();
@@ -31,9 +39,9 @@ namespace TF.OdinExtendedInspector.Editor
         {
             selectedItem = MenuTree?.Selection?.SelectedValue as TObject;
 
-            var buttonResult = menuList[selectedMenuIndex].isItemList ? 
-                TabMenuUtils.SelectButtonListItemList(ref selectedMenuIndex, menuList.Select(x => x.name).ToArray(), SelectData, RefreshData, DeleteData, ref searchString, ForceMenuTreeRebuild) : 
-                TabMenuUtils.SelectButtonList(ref selectedMenuIndex, menuList.Select(x => x.name).ToArray(), RefreshData);
+            var buttonResult = menuList[selectedMenuIndex].isItemList
+                ? TabMenuUtils.SelectButtonListItemList(ref selectedMenuIndex, menuList.Select(x => x.name).ToArray(), SelectData, RefreshData, DeleteData, ref searchString, ForceMenuTreeRebuild)
+                : TabMenuUtils.SelectButtonList(ref selectedMenuIndex, menuList.Select(x => x.name).ToArray(), RefreshData);
             
             if (buttonResult)
             {
@@ -57,46 +65,47 @@ namespace TF.OdinExtendedInspector.Editor
         protected override OdinMenuTree BuildMenuTree()
         {
             var menuTree = new OdinMenuTree();
+
+            if (LeftDropdownIcon)
+            {
+                menuTree.DefaultMenuStyle.SetAlignTriangleLeft(true);
+                menuTree.DefaultMenuStyle.SetTrianglePadding(0f);
+            }
             
             switch (selectedMenuIndex)
             {
                 case 0:
-                {
-                    GenerateAvailableSettingList(menuTree);
+                    GenerateAvailableItemList(menuTree);
                     break;
-                }
                 case 1:
-                {
                     GenerateCreateNewDataMenu(menuTree);
                     break;
-                }
                 default:
-                {
-                    GenerateAvailableSettingList(menuTree);
+                    GenerateAvailableItemList(menuTree);
                     break;
-                }
             }
             
+            if (InitialForceFolded) menuTree.EnumerateTree().ForEach(item => item.Toggled = false);
             return menuTree;
         }
 
-        protected virtual void GenerateAvailableSettingList(OdinMenuTree menuTree)
+        protected virtual void GenerateAvailableItemList(OdinMenuTree menuTree)
         {
-            foreach (var item in menuItemList)
+            foreach (var item in itemList)
             {
-                if (item == null)
-                { continue; }
-
-                if (!string.IsNullOrWhiteSpace(searchString))
-                {
-                    if (!item.name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-                    {
-                        continue;
-                    }
-                }
+                if (item == null) continue;
+                if (!IsSearchValid(item)) continue;
                 
-                menuTree.Add(item.name.Replace('_', '/'), item);
+                var result = menuTree.Add(item.name.Replace(Separator, '/'), item);
+                
+                var menuItem = result.LastOrDefault();
+                if (menuItem is not null) ModifyMenuItem(item, menuItem);
             }
+        }
+
+        protected virtual void ModifyMenuItem(TObject item, OdinMenuItem menuItem)
+        {
+            
         }
 
         protected virtual void GenerateCreateNewDataMenu(OdinMenuTree menuTree)
@@ -107,24 +116,23 @@ namespace TF.OdinExtendedInspector.Editor
 
         private void RefreshData()
         {
+            itemList.Clear();
+            
             var filter = "t:" + typeof(TObject).Name;
             var allObjectGuids = AssetDatabase.FindAssets(filter);
                 
             foreach (var guid in allObjectGuids)
             {
                 var item = AssetDatabase.LoadAssetAtPath<TObject>(AssetDatabase.GUIDToAssetPath(guid));
-
-                if (item is not null)
-                {
-                    menuItemList.Add(item);
-                }
+                if (item is null) continue;
+                
+                itemList.Add(item);
             }
         }
 
         private void SelectData()
         {
-            if (selectedItem is null)
-            { return; }
+            if (selectedItem is null) return;
             
             Selection.activeObject = selectedItem;
         }
@@ -226,6 +234,15 @@ namespace TF.OdinExtendedInspector.Editor
                 new (true, "Available Items"),
                 new (false, "Create New Item"),
             };
+        }
+        
+        // helper
+        private bool IsSearchValid(TObject item)
+        {
+            if (string.IsNullOrWhiteSpace(searchString)) return true;
+            if (!item.name.Contains(searchString, StringComparison.OrdinalIgnoreCase)) return false;
+
+            return true;
         }
     }
 }

@@ -15,25 +15,17 @@ namespace TF.OdinExtendedInspector.Editor
             switch (selectedMenuIndex)
             {
                 case 0:
-                {
                     GenerateActiveSetting(menuTree);
                     break;
-                }
                 case 1:
-                {
-                    GenerateAvailableSettingList(menuTree);
+                    GenerateAvailableItemList(menuTree);
                     break;
-                }
                 case 2:
-                {
                     GenerateCreateNewDataMenu(menuTree);
                     break;
-                }
                 default:
-                {
                     GenerateActiveSetting(menuTree);
                     break;
-                }
             }
             
             return menuTree;
@@ -43,7 +35,6 @@ namespace TF.OdinExtendedInspector.Editor
         {
             menuTree.Add("Active Setting", ActiveMenuSetting);
         }
-
 
         protected override List<(bool, string)> GetMenuNameList()
         {

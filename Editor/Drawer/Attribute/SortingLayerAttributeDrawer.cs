@@ -15,7 +15,7 @@ namespace TF.OdinExtendedInspector.Editor
         }
     }
 
-    internal class SortingLayerAttributeListDrawer : MultipleItemSelectorAttributeDrawer<SortingLayerAttribute, IEnumerable<string>, string>
+    internal class SortingLayerAttributeListDrawer : MultipleItemSelectorAttributeDrawer<SortingLayerAttribute, List<string>, string>
     {
         protected override IEnumerable<string> GetSourceData()
         {
@@ -30,7 +30,7 @@ namespace TF.OdinExtendedInspector.Editor
         }
     }
 
-    internal class SortingLayerAttributeArrayDrawer : MultipleItemSelectorAttributeDrawer<SortingLayerAttribute, IEnumerable<string>, string>
+    internal class SortingLayerAttributeArrayDrawer : MultipleItemSelectorAttributeDrawer<SortingLayerAttribute, string[], string>
     {
         protected override IEnumerable<string> GetSourceData()
         {

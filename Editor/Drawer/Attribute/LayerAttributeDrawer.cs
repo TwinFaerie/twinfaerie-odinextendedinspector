@@ -11,7 +11,7 @@ namespace TF.OdinExtendedInspector.Editor
         }
     }
 
-    internal class LayerAttributeListDrawer : MultipleItemSelectorAttributeDrawer<LayerAttribute, IEnumerable<string>, string>
+    internal class LayerAttributeListDrawer : MultipleItemSelectorAttributeDrawer<LayerAttribute, List<string>, string>
     {
         protected override IEnumerable<string> GetSourceData()
         {
@@ -24,7 +24,7 @@ namespace TF.OdinExtendedInspector.Editor
         }
     }
 
-    internal class LayerAttributeArrayDrawer : MultipleItemSelectorAttributeDrawer<LayerAttribute, IEnumerable<string>, string>
+    internal class LayerAttributeArrayDrawer : MultipleItemSelectorAttributeDrawer<LayerAttribute, string[], string>
     {
         protected override IEnumerable<string> GetSourceData()
         {

@@ -40,7 +40,10 @@ namespace TF.OdinExtendedInspector.Editor
             var rect = EditorGUILayout.GetControlRect(label != null);
             rect = label == null ? EditorGUI.IndentedRect(rect) : EditorGUI.PrefixLabel(rect, label);
 
-            if (EditorGUI.DropdownButton(rect, buttonContent, FocusType.Passive))
+            var style = EditorStyles.miniPullDown;
+            style.fixedHeight = 0f;
+
+            if (EditorGUI.DropdownButton(rect, buttonContent, FocusType.Passive, style))
             {
                 var selector = new GenericSelector<T>(string.Empty, false, GetMenuItemName, sourceData);
                 selector.SelectionTree.Config.UseCachedExpandedStates = false;
@@ -102,7 +105,7 @@ namespace TF.OdinExtendedInspector.Editor
             }
             else
             {
-                buttonContent.text = string.Join(", ", ValueEntry.SmartValue.ToString());
+                buttonContent.text = string.Join(", ", ValueEntry.SmartValue.Select(item => item.ToString()));
             }
 
             buttonContent.tooltip = buttonContent.text;
@@ -236,7 +239,7 @@ namespace TF.OdinExtendedInspector.Editor
             }
             else
             {
-                buttonContent.text = string.Join(", ", ValueEntry.SmartValue.ToString());
+                buttonContent.text = string.Join(", ", ValueEntry.SmartValue.Select(item => item.ToString()));
             }
 
             buttonContent.tooltip = buttonContent.text;
